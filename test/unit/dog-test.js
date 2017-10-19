@@ -2,16 +2,45 @@ const Dog = require('../../lib/model/dog');
 const assert = require('chai').assert;
 
 describe('DOG TEST', () => {
-
-    const dog = new Dog ({
-        name: 'Rosie',
-        powers: {
-            swimming: true
-        }
+    
+    it('should validate', () => {
+        const dog = new Dog ({
+            name: 'Rosie',
+            stats: {
+                HP: 11,
+                MP: 25,
+                swims: true
+            }
+        });
+        assert.equal( dog.validateSync(), undefined );
     });
 
-    it('should validate', () => {
-        assert.equal( dog.validateSync(), undefined );
+    it.only('should return error if no name', () => {
+        const namelessDog = new Dog ({
+            name: 999999,
+            stats: {
+                swims: true
+            }
+        });
+        const errors  = namelessDog.validateSync();
+        assert.equal(errors.name.kind, 'required');
+    });
+
+    it('should return error if invalid power', () => {
+        const invalidDog = new Dog ({
+            name: 'Partario',
+            stats: {
+                HP: 24,
+                MP: -5,
+                fakeStat: true
+            }
+        }, {strict: true});
+
+        console.log(invalidDog.validateSync());
+        const error = invalidDog.validateSync();
+        console.log(error);
+        assert.equal(error.errors.powers.kind, 'required');
+        
     });
 
 });
