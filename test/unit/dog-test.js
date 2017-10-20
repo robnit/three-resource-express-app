@@ -3,7 +3,7 @@ const assert = require('chai').assert;
 
 describe('DOG TEST', () => {
     
-    it('should validate', () => {
+    it.only('should validate', () => {
         const dog = new Dog ({
             name: 'Rosie',
             stats: {
@@ -15,14 +15,15 @@ describe('DOG TEST', () => {
         assert.equal( dog.validateSync(), undefined );
     });
 
-    it.only('should return error if no name', () => {
+    it('should return error if no name', () => {
         const namelessDog = new Dog ({
-            name: 999999,
+            name: 999,
             stats: {
                 swims: true
             }
         });
         const errors  = namelessDog.validateSync();
+        console.log('=======' , errors);
         assert.equal(errors.name.kind, 'required');
     });
 
