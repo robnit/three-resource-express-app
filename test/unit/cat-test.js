@@ -23,7 +23,7 @@ describe('CAT TEST', () => {
             }
         });
         const {errors} = cat.validateSync();
-        assert.equal(errors.name, 'ValidationError');
+        assert.equal(errors['stats.MP'].name, 'ValidatorError');
     });
 
 });

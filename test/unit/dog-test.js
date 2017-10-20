@@ -3,7 +3,7 @@ const assert = require('chai').assert;
 
 describe('DOG TEST', () => {
     
-    it.only('should validate', () => {
+    it('should validate', () => {
         const dog = new Dog ({
             name: 'Rosie',
             stats: {
@@ -17,30 +17,25 @@ describe('DOG TEST', () => {
 
     it('should return error if no name', () => {
         const namelessDog = new Dog ({
-            name: 999,
             stats: {
                 swims: true
             }
         });
-        const errors  = namelessDog.validateSync();
-        console.log('=======' , errors);
+        const { errors }  = namelessDog.validateSync();
         assert.equal(errors.name.kind, 'required');
     });
 
-    it('should return error if invalid power', () => {
+    it('should return error if invalid HP', () => {
         const invalidDog = new Dog ({
             name: 'Partario',
             stats: {
-                HP: 24,
-                MP: -5,
-                fakeStat: true
+                HP: -24,
+                MP: 5,
             }
         }, {strict: true});
 
-        console.log(invalidDog.validateSync());
         const error = invalidDog.validateSync();
-        console.log(error);
-        assert.equal(error.errors.powers.kind, 'required');
+        assert.equal(error.errors['stats.HP'].kind, 'min');
         
     });
 
